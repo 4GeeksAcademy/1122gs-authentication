@@ -29,7 +29,7 @@ export const router = createBrowserRouter(
         <Route path="/demo" element={<Demo />} />
         <Route path = "/signup" element={<SignUp/>}/>
         <Route path = "/login" element={<LogIn/>}/>
-        {/* <Route path = "/private" element={<Private/>}/> */}
+        <Route path = "/private" element={<Private/>}/>
 
 
       </Route>

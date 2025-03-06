@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
-from flask_jwt_extended import create_access_token, JWTManager
+from flask_jwt_extended import create_access_token, JWTManager, jwt_required, get_jwt_identity
 
 
 api = Blueprint('api', __name__)
@@ -38,10 +38,10 @@ def create_token():
     if user.password != password:
         return jsonify({"msg": "Wrong Password"}), 401
     
-
-    # Create a new token with the user id inside
     access_token = create_access_token(identity=email)
     return jsonify({"token": access_token, "user_id":email})
+
+
 
 @api.route("/signup", methods=['POST'])
 def add_to_user_database():
@@ -59,8 +59,16 @@ def add_to_user_database():
     db.session.commit()
     return jsonify({"message":"User created successfully"})
 
-@api.route("/private", methods="GET")
-def privatepage()
+
+
+@api.route("/private", methods=["GET"])
+@jwt_required()
+def privatepage():
+    this_user_id = get_jwt_identity()
+    user = User.query.get(this_user_id)
+    return jsonify({"id": user.id, "username": user.username }), 200
+
+    
     
 
 
