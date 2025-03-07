@@ -7,11 +7,9 @@ export const SignUp = () => {
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
-        e.preventDefault();  
+        e.preventDefault();   
 
-        console.log("Submitting form with:", email, password);  
-
-        const payload = { email, password };
+        const payload = { 'email':email, 'password':password };
 
         try {
             const response = await fetch("https://fluffy-sniffle-q7ppr6jr9j9x34q4j-3001.app.github.dev/api/signup", {
@@ -24,10 +22,11 @@ export const SignUp = () => {
                 throw new Error("Signup failed");
             }
 
-            const data = await response.json();  // ✅ Await response
+            const data = await response.json();  
 
             console.log("User added successfully:", data);
-            navigate('/login');  // ✅ Redirect only if successful
+            navigate('/login');  
+
         } catch (error) {
             console.error("Error fetching data:", error);
         }

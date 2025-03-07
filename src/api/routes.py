@@ -66,7 +66,7 @@ def add_to_user_database():
 def privatepage():
     this_user_id = get_jwt_identity()
     user = User.query.get(this_user_id)
-    return jsonify({"id": user.id, "username": user.username }), 200
+    return jsonify({"id": user.id, "email": user.email }), 200
 
     
     

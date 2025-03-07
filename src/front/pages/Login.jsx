@@ -1,63 +1,41 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { SignUp } from "./SIgnup";
+import { useNavigate } from "react-router-dom";
+
 
 
 export const LogIn = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const navigate = useNavigate()
+
 
     const handleclick = async (e) => {
         e.preventDefault()
-        const payload = { "email": "email", "password": "password" }
+        const payload = { "email": email, "password": password}
+        
 
-       const response = await fetch("https://fluffy-sniffle-q7ppr6jr9j9x34q4j-3001.app.github.dev/api/token", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        }
-        )
-        try{
-            if(!response.ok){
-                console.log("Login failed")
+        try {
+            const response = await fetch("https://fluffy-sniffle-q7ppr6jr9j9x34q4j-3001.app.github.dev/api/token", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
             }
-           data = response.json()
+            )
 
-           if(data.token){
-            sessionStorage.setItem("token", data.token);
-            window.location.href = "/private";
-           }
+            if (!response.ok) {
+
+                throw new Error("Login failed");
+            }
+            const data =  await response.json();
+
+            if (data) {
+                sessionStorage.setItem("token", data);
+                navigate("/private");
+            }
         }
-        catch{
-            (console.error("Error fatching data"))
+        catch (error) {
+            console.error("Error fatching data")
         }
-
-
-
-
-
-
-
-            // .then((resp) => {
-            //     if (!resp.ok) {
-            //         console.log("Error fetching token ")
-            //     }
-            //     return resp.json()
-
-            // })
-            // .then((data) => {
-            //     console.log("Here is your data", data);
-            //     if (data.token) {  
-            //         sessionStorage.setItem("token", data.token);
-            //         window.location.href = "/private";  
-            //     } else {
-            //         console.log("No token received");
-            //     }
-            // })
-
-
-
-            // catch(error => console.log("Error fetching token", error))
 
     }
 
