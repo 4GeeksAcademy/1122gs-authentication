@@ -35,8 +35,8 @@ def create_token():
     if email is None or password is None:
         return jsonify({"msg": "Bad credentials"}), 401
     
-    if user.password != password:
-        return jsonify({"msg": "Wrong Password"}), 401
+    # if user.password != password:
+    #     return jsonify({"msg": "Wrong Password"}), 401
     
     access_token = create_access_token(identity=email)
     return jsonify({"token": access_token, "user_id":email})
@@ -64,9 +64,9 @@ def add_to_user_database():
 @api.route("/private", methods=["GET"])
 @jwt_required()
 def privatepage():
-    this_user_id = get_jwt_identity()
-    user = User.query.get(this_user_id)
-    return jsonify({"id": user.id, "email": user.email }), 200
+    user_id = get_jwt_identity()
+   
+    return jsonify(logged_in_as=user_id), 200
 
     
     

@@ -29,7 +29,7 @@ export const LogIn = () => {
             const data =  await response.json();
 
             if (data) {
-                sessionStorage.setItem("token", data);
+                sessionStorage.setItem("token", data.token);
                 navigate("/private");
             }
         }
